@@ -2,6 +2,13 @@ Marlin **2.1.2.8** (newest stable release) built for an **Ender 3** running a **
 
 This carries forward the same customizations as [Marlin-2.1.2.4-Ender-3-SRK-Mini-E3-V3.0-BLTouch](https://github.com/imnotnoa/Marlin-2.1.2.4-Ender-3-SRK-Mini-E3-V3.0-BLTouch): BLTouch enabled with probe offset `{-44.5, -10, 0.00}`, bilinear bed leveling, Z-homing via probe, and the LCD/menu tweaks (mute option, turbo back button, remaining-time display, autostart menu, animated boot logo, etc.). Full source: [Marlin-2.1.2.8-Ender-3-SRK-Mini-E3-V3.0-BLTouch](https://github.com/imnotnoa/Marlin-2.1.2.8-Ender-3-SRK-Mini-E3-V3.0-BLTouch).
 
+## What's new in this build
+
+- **Z babystep now persists to the probe offset.** Adjusting Z babystep during a print updates the BLTouch Z-offset (`M851 Z`) directly, so `M500` afterward keeps it — no more re-dialing in the same tweak every print. The Z-offset editor also shows a graphical overlay on the LCD.
+- **Babystepping is available at any time**, not just while the printer is actively moving, and the LCD shows the accumulated babystep total.
+- **Smoother bed mesh.** The probed 5×5 bilinear mesh is now interpolated with 3 subdivisions per cell for better surface following between probe points.
+- **`G26` mesh validation** is enabled — print a test grid on demand to visually check your leveling quality.
+
 ## ⚠️ Before you flash
 
 - This firmware is built specifically for the **BigTreeTech SKR Mini E3 V3.0** board. Do not flash it onto any other board.
@@ -27,4 +34,4 @@ M502   ; load firmware defaults
 M500   ; save to EEPROM
 ```
 
-Then redo bed leveling (`G29`) before your next print.
+Then redo bed leveling (`G29`) before your next print — the mesh is now built with extra subdivisions, so a fresh probe pass is worth it. Afterward, try `G26` to print a quick validation grid and confirm the leveling looks right before committing to a full print.
